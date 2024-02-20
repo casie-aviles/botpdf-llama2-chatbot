@@ -1,5 +1,6 @@
 import time
 from llama_index.llms import Ollama
+from llama_index import VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader
 
 llm = Ollama(model='llama2')
 
