@@ -1,8 +1,12 @@
 import time
-from llama_index.llms import Ollama
-from llama_index import VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader
+import chromadb
+
+from llama_index.llms.ollama import Ollama
+from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.core import VectorStoreIndex, ServiceContext, StorageContext, SimpleDirectoryReader
 
 llm = Ollama(model='llama2')
+print(llm.metadata)
 
 def stream_response(prompt):
     """
@@ -28,7 +32,38 @@ def stream_response(prompt):
     >>> for delta in stream_response("Generate a summary for a given text"):
     >>>     print(delta)
 """
+    start_time = time.time()
+
     response = llm.stream_complete(prompt)
-    for item in response:
-        yield item.delta
-        time.sleep(0.02)
+    for token in response:
+        yield token.delta
+    
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("stream_response() elapsed time:", elapsed_time, "seconds")
+
+def search_pdf(query):
+    start_time = time.time()
+    documents = SimpleDirectoryReader("data/").load_data()
+
+    # Create Chroma DB client and store
+    client = chromadb.PersistentClient(path="./chroma_db_data")
+    chroma_collection = client.get_or_create_collection(name="reviews")
+    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
+    # Initialize ServiceContext
+    service_context = ServiceContext.from_defaults(llm=llm, embed_model="local")
+
+    # Create VectorStoreIndex and query engine
+    index = VectorStoreIndex.from_documents(documents, service_context=service_context, storage_context=storage_context)
+    query_engine = index.as_query_engine(streaming=True)
+
+    # Query
+    response = query_engine.query(query)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("search_pdf() elapsed time:", elapsed_time, "seconds")
+
+    return response.response_gen

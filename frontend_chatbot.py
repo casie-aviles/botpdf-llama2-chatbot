@@ -1,6 +1,7 @@
 import os
+import time
 import streamlit as st
-from llm_interface import stream_response
+from llm_interface import stream_response, search_pdf
 
 def save_uploaded_file(uploaded_file):
     """
@@ -21,17 +22,24 @@ def save_uploaded_file(uploaded_file):
     """
     with open(os.path.join("data", uploaded_file.name), "wb") as file:
         file.write(uploaded_file.getbuffer())
-    return st.success(f"Saved PDF file: {uploaded_file.name} to directory")
+    return st.sidebar.success(f"Saved PDF file: {uploaded_file.name} to directory")
 
 if __name__ == "__main__":
     # Set app configurations
-    st.set_page_config(page_title="Assistant Chatbot")
-    st.title("🤖 Assistant Chatbot")
-    st.caption("Streamlit chatbot powered by 🦙 Llama 2 LLM ")
+    st.set_page_config(page_title="BotPDF", page_icon="🤖")
+    st.title("🤖 BotPDF")
+    st.caption(body=
+        """
+        A streamlit chatbot powered by 🦙 Llama2 
+        <acronym title="Large Language Model">LLM</acronym> with simple 
+        <acronym title="Retrieval Augmented Generation">RAG</acronym>.
+        """,        
+        unsafe_allow_html=True)
+    st.divider()
 
-    # Add sidebar for file upload feature
     st.sidebar.title("📤 Upload PDF")
-    uploaded_pdf = st.sidebar.file_uploader("Have the assistant take a look at your PDF file", type=["pdf"])
+    st.sidebar.caption("Have the assistant take a look at your PDF file")
+    uploaded_pdf = st.sidebar.file_uploader(label="label", label_visibility="collapsed", type=["pdf"])
 
     # Save the file once uploaded
     if uploaded_pdf is not None:
@@ -54,7 +62,14 @@ if __name__ == "__main__":
 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
+            start_time = time.time()
             with st.spinner("Generating..."):
-                response = st.write_stream(stream_response(prompt))
+                if len(os.listdir('data/')) == 0:
+                    response = st.write_stream(stream_response(prompt))
+                else:
+                    response = st.write_stream(search_pdf(prompt))
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print("llm response elapsed time:", elapsed_time, "seconds")
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
