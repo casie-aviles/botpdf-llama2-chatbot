@@ -24,7 +24,10 @@ def save_uploaded_file(uploaded_file):
         file.write(uploaded_file.getbuffer())
     return st.sidebar.success(f"Saved PDF file: {uploaded_file.name} to directory")
 
-if __name__ == "__main__":
+def main():
+    """
+    Set app configurations and handle PDF upload, chat history, and user assistant interaction.
+    """
     # Set app configurations
     st.set_page_config(page_title="BotPDF", page_icon="🤖")
     st.title("🤖 BotPDF")
@@ -33,13 +36,15 @@ if __name__ == "__main__":
         A streamlit chatbot powered by 🦙 Llama2 
         <acronym title="Large Language Model">LLM</acronym> with simple 
         <acronym title="Retrieval Augmented Generation">RAG</acronym>.
-        """,        
+        """,
         unsafe_allow_html=True)
     st.divider()
 
     st.sidebar.title("📤 Upload PDF")
     st.sidebar.caption("Have the assistant take a look at your PDF file")
-    uploaded_pdf = st.sidebar.file_uploader(label="label", label_visibility="collapsed", type=["pdf"])
+    uploaded_pdf = st.sidebar.file_uploader(label="label",
+                                            label_visibility="collapsed",
+                                            type=["pdf"])
 
     # Save the file once uploaded
     if uploaded_pdf is not None:
@@ -65,11 +70,16 @@ if __name__ == "__main__":
             start_time = time.time()
             with st.spinner("Generating..."):
                 if len(os.listdir('data/')) == 0:
+                    # If no PDFs are uploaded, generate response without querying PDF
                     response = st.write_stream(stream_response(prompt))
                 else:
+                    # If PDFs are uploaded, query the PDFs
                     response = st.write_stream(search_pdf(prompt))
             end_time = time.time()
             elapsed_time = end_time - start_time
             print("llm response elapsed time:", elapsed_time, "seconds")
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+if __name__ == "__main__":
+    main()

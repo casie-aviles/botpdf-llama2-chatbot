@@ -12,10 +12,10 @@ def stream_response(prompt):
     """
     Streams the completion of a prompt using a large language model (LLM).
 
-    Parameters:
+    Args:
     - prompt (str): The prompt text to be completed by the language model.
 
-    Yields:
+    Returns:
     - delta (float): The delta value associated with each response generated
       by the language model in response to the provided prompt.
 
@@ -37,12 +37,22 @@ def stream_response(prompt):
     response = llm.stream_complete(prompt)
     for token in response:
         yield token.delta
-    
+
     end_time = time.time()
     elapsed_time = end_time - start_time
     print("stream_response() elapsed time:", elapsed_time, "seconds")
 
 def search_pdf(query):
+    """
+    Function to search for a given query in a collection of PDF documents 
+    and return the response generator.
+    
+    Args: 
+    - query (str): The query string to search for in the PDF documents.
+    
+    Returns:
+    - response (str): A response generator containing the search results.
+    """
     start_time = time.time()
     documents = SimpleDirectoryReader("data/").load_data()
 
@@ -56,7 +66,9 @@ def search_pdf(query):
     service_context = ServiceContext.from_defaults(llm=llm, embed_model="local")
 
     # Create VectorStoreIndex and query engine
-    index = VectorStoreIndex.from_documents(documents, service_context=service_context, storage_context=storage_context)
+    index = VectorStoreIndex.from_documents(documents,
+                                            service_context=service_context,
+                                            storage_context=storage_context)
     query_engine = index.as_query_engine(streaming=True)
 
     # Query
