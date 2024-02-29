@@ -8,17 +8,17 @@ def save_uploaded_file(uploaded_file):
     Saves an uploaded file to a specified directory.
 
     Args:
-        uploaded_file: Uploaded file object to be saved.
+    - uploaded_file: Uploaded file object to be saved.
 
     Returns:
-        An acknowledgment message upon successful saving of the file.
+    - An acknowledgment message upon successful saving of the file.
 
     Raises:
-        Any exceptions raised during the file saving process.
+    - Any exceptions raised during the file saving process.
 
-    Note:
-        This function assumes the existence of a 'data' directory in the current working directory.
-        If the directory does not exist, an appropriate exception will be raised.
+    Notes:
+    - This function assumes the existence of a 'data' directory in the current working directory.
+    - If the directory does not exist, an appropriate exception will be raised.
     """
     with open(os.path.join("data", uploaded_file.name), "wb") as file:
         file.write(uploaded_file.getbuffer())

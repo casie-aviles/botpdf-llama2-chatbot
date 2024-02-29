@@ -31,7 +31,7 @@ def stream_response(prompt):
     Example:
     >>> for delta in stream_response("Generate a summary for a given text"):
     >>>     print(delta)
-"""
+    """
     start_time = time.time()
 
     response = llm.stream_complete(prompt)
