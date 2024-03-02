@@ -40,6 +40,10 @@ def main():
         unsafe_allow_html=True)
     st.divider()
 
+    if os.path.exists('data') is False:
+        os.mkdir('data')
+
+    # Add sidebar with PDF uploader
     st.sidebar.title("📤 Upload PDF")
     st.sidebar.caption("Have the assistant take a look at your PDF file")
     uploaded_pdf = st.sidebar.file_uploader(label="label",

@@ -2,4 +2,6 @@ streamlit
 llama-index
 llama-index-llms-ollama
 llama-index-embeddings-huggingface
+torch 
+transformers
 chromadb
