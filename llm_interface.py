@@ -5,7 +5,7 @@ from llama_index.llms.ollama import Ollama
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core import VectorStoreIndex, ServiceContext, StorageContext, SimpleDirectoryReader
 
-llm = Ollama(model='llama2')
+llm = Ollama(model='llama2', request_timeout=300.0)
 print(llm.metadata)
 
 def stream_response(prompt):
