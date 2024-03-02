@@ -1,4 +1,3 @@
-import time
 import chromadb
 
 from llama_index.llms.ollama import Ollama
@@ -32,15 +31,9 @@ def stream_response(prompt):
     >>> for delta in stream_response("Generate a summary for a given text"):
     >>>     print(delta)
     """
-    start_time = time.time()
-
     response = llm.stream_complete(prompt)
     for token in response:
         yield token.delta
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print("stream_response() elapsed time:", elapsed_time, "seconds")
 
 def search_pdf(query):
     """
@@ -53,7 +46,6 @@ def search_pdf(query):
     Returns:
     - response (str): A response generator containing the search results.
     """
-    start_time = time.time()
     documents = SimpleDirectoryReader("data/").load_data()
 
     # Create Chroma DB client and store
@@ -73,9 +65,5 @@ def search_pdf(query):
 
     # Query
     response = query_engine.query(query)
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print("search_pdf() elapsed time:", elapsed_time, "seconds")
 
     return response.response_gen

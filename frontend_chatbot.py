@@ -56,11 +56,15 @@ def main():
 
     # Initialize chat history
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?", "elapsed_time": 0}]
 
     # Display messages from chat history
     for msg in st.session_state.messages:
-        st.chat_message(msg["role"]).write(msg["content"])
+        if msg["role"] == "assistant":
+            st.chat_message(msg["role"]).write(msg["content"])
+            st.caption(f"elapsed time: {msg['elapsed_time']}s")
+        else:
+            st.chat_message(msg["role"]).write(msg["content"])
 
     # Accept user input
     if prompt := st.chat_input():
@@ -81,9 +85,11 @@ def main():
                     response = st.write_stream(search_pdf(prompt))
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print("llm response elapsed time:", elapsed_time, "seconds")
+            elapsed_time = round(elapsed_time, 2)
+        # Display LLM's elapsed time
+        st.caption(f"elapsed time: {elapsed_time}s")
         # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.messages.append({"role": "assistant", "content": response, "elapsed_time": elapsed_time})
 
 if __name__ == "__main__":
     main()
