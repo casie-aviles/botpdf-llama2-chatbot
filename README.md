@@ -22,6 +22,8 @@ After cloning the repository, follow the steps below to install the dependencies
 - Run `ollama serve`
 - Run `streamlit run frontend_chatbot.py` in the command line
 
+*Note: If you want to quickly run the app with an empty knowledge base (i.e. forget the previously uploaded PDFs), you can run `reset.bat` for Windows or `reset.sh` for Unix-like systems. Alternatively, you can manually delete the contents of the `data` folder and delete the `chroma_db_data` folder entirely.*
+
 # Demo
 ## Upload your PDF
 https://github.com/casie-aviles/botpdf-llama2-chatbot/assets/80239105/3185a3d4-36c9-41e4-8da0-cba8f1dde633
