@@ -1,6 +1,12 @@
 # 🤖BotPDF
 A Large Language Model (LLM) chatbot project, where users can upload PDF files to receive tailored responses generated directly from the document contents.
 
+# What I learned
+- How to use other forms of input for the LLM other than text prompts
+- How we can customize context for the LLM via Retrieval Augmented Generation (RAG) without having to train your own LLM
+- How RAG works by utilizing vector embeddings, which is a way to represent the semantics of words in a numerical form
+- How to build a RAG pipeline using open-source tools and technologies
+
 # Tech Stack
 - [`streamlit`](https://streamlit.io/) - frontend
 - [`ollama`](https://ollama.com/) - run open-source LLMs locally
