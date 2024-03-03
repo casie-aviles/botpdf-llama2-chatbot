@@ -34,6 +34,8 @@ https://github.com/casie-aviles/botpdf-llama2-chatbot/assets/80239105/94a2f3a8-d
 ## Cross-reference your PDFs
 https://github.com/casie-aviles/botpdf-llama2-chatbot/assets/80239105/2c76dba5-a654-43ae-b6c0-31f6621584fa
 
+# Feedback
+All manner of feedback is highly appreciated. I am relatively new to this and I would love to hear your comments and suggestions as part of the learning experience. Thank you!
 
 
 
