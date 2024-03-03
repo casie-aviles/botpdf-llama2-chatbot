@@ -1,5 +1,5 @@
 # 🤖BotPDF
-A Large Language Model (LLM) chatbot project, where users can upload PDF files to receive tailored responses generated directly from the document contents.
+A simple Large Language Model (LLM) chatbot project, where users can upload PDF files to receive tailored responses generated directly from the document contents.
 
 # What I learned
 - How to use other forms of input for the LLM other than text prompts
